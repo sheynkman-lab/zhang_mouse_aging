@@ -1,0 +1,14 @@
+name: PoGo
+channels:
+  - defaults
+dependencies:
+  - biopython
+  - bottleneck
+  - gtfparse
+  - pandas
+  - pip
+  - python=3.12.2
+  - python-dateutil
+  - python-tzdata
+  - pytz
+  - six
