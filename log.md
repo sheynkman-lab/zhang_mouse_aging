@@ -20,7 +20,8 @@ conda activate PoGo
 ```
 
 # Step 2 - convert GTF and FASTA files to be PoGo compatible 
-First, we need an ensg to gene name map, then we can convert the GTF and FASTA files to be PoGo compatible. <br/>
+First, we need an ensg to gene name map from the Gencode database, then we can convert the GTF and FASTA files to be PoGo compatible. <br/>
+We need a GTF file with CDS and a FASTA file with ORF information to create the PoGo database. <br/>
 ```
 python ./GTF_FASTA_2PoGo/extract_ensg_to_gene_map_gencode_gtf.py --gtf_file ./gencode_mouse_models/gencode.vM35.annotation.gtf --output_file ./GTF_FASTA_2PoGo/ensg_to_gene_name_map.txt
 
