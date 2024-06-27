@@ -1,2 +1,15 @@
 00_2024-05-29_Tian_Aging_Mouse_SpliceProt/
 00_gencode_mouse_models/
+02_GTF_FASTA_2PoGo/CORRECTED_PoGo_compatible.fasta
+02_GTF_FASTA_2PoGo/CORRECTED_with_cds_PoGo_compatible.gtf
+LRP/01_isoseq/
+LRP/01_reference_tables/
+LRP/02_sqanti/
+LRP/04_CPAT/
+LRP/04_transcriptome_summmary/
+LRP/05_orf_calling/
+LRP/06_refine_orf_database/
+LRP/07_make_cds_gtf/
+orf_calling_latest.sif
+pb-cds-gtf_latest.sif
+generate-reference-tables_latest.sif
