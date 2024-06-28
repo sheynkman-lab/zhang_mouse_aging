@@ -164,13 +164,39 @@ python ./02_GTF_FASTA_2PoGo/map_peptides_to_pacbio_database.py --pacbio_fasta ./
 Be sure PoGo is in your PATH. <br/>
 So, this works, but I need to run it through some parts of the LRP to get the right files types. for fasta and gtf pogo.
 ```
-export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo 
 
-PoGo -fasta ./02_GTF_FASTA_2PoGo/CORRECTED_PoGo_compatible.fasta -gtf ./02_GTF_FASTA_2PoGo/CORRECTED_with_cds_PoGo_compatible.gtf -in ./01_Peptides2Pogo/pq31193_peptide_POGO.txt -format BED -species MOUSE 
+PoGo -fasta ./00_gencode_mouse_models/human/gencode.v46.pc_translations.fa -gtf ./00_gencode_mouse_models/human/gencode.v46.annotation.gtf -in all_peptide_POGO.txt -format BED -species MOUSE 
+```
 
-PoGo -fasta ./00_gencode_mouse_models/gencode.vM35.pc_translations.fa -gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf -in ./01_Peptides2Pogo/pq31190_peptide_POGO.txt -format BED -species MOUSE 
+Trying to use the LRP scripts to make the bed files for genome browser
+Multiregion BED generation
+```
+conda activate visualization
 
-PoGo -fasta ./00_gencode_mouse_models/gencode.vM35.pc_translations.fa -gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf -in pq31194_peptide_POGO.txt -format BED -species MOUSE 
+python ./00_scripts/18_make_region_bed_for_ucsc.py \
+--name mouse_multi \
+--sample_gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf \
+--reference_gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf \
+--output_dir ./LRP_tracks/multiregion_bed
+```
+Peptide Track Visualization
+```
+python ./00_scripts/18_make_peptide_gtf_file.py \
+--name ./LRP_tracks/mouse_peptides \
+--sample_gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf \
+--reference_gtf ./00_input_data/gencode.v35.annotation.canonical.gtf \
+--peptides ./01_Peptides2Pogo/all_peptide_POGO.txt \
+--pb_gene ./LRP/04_transcriptome_summary/pb_gene.tsv \
+--gene_isoname ./LRP/01_reference_tables/gene_isoname.tsv \
+--refined_fasta ./00_gencode_mouse_models/gencode.vM35.pc_transcripts.fa 
 
-PoGo -fasta ./00_gencode_mouse_models/gencode.vM35.pc_translations.fa -gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf -in pq31153_peptide_POGO.txt -format BED -species MOUSE 
+gtfToGenePred ./18_track_visualization/peptide/jurkat_hybrid_peptides.gtf ./18_track_visualization/peptide/jurkat_hybrid_peptides.genePred
+genePredToBed ./18_track_visualization/peptide/jurkat_hybrid_peptides.genePred ./18_track_visualization/peptide/jurkat_hybrid_peptides.bed12
+# add rgb to colorize specific peptides
+python ./00_scripts/18_finalize_peptide_bed.py \
+--bed ./18_track_visualization/peptide/jurkat_hybrid_peptides.bed12 \
+--name ./18_track_visualization/jurkat_hybrid
+
+conda deactivate
 ```
