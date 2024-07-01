@@ -238,7 +238,7 @@ conda deactivate
 cd /project/sheynkman/programs-needs_attentionEFW
 wget https://github.com/cschlaffner/PoGo/releases/download/v1.2.3/PoGo_v1.2.3.zip
 unzip PoGo_v1.2.3.zip
-export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo_v1.2.3
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo_v1.2.3/Linux
 ```
 This version of PoGo will work with mouse data, but it does not support Gencode. It only supports Ensambl. So I'm downloading the new dataset.
 
@@ -246,7 +246,15 @@ This version of PoGo will work with mouse data, but it does not support Gencode.
 ```
 cd /project/sheynkman/projects/zhang_mouse_aging
 
-PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/all_peptide_POGO.txt -format BED
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/all_peptides.txt -format BED
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/pq31153_peptides.txt -format BED
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/pq31190_peptides.txt -format BED
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/pq31193_peptides.txt -format BED
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/pq31194_peptides.txt -format BED
 ```
 
 # Step 3 - Convert to bigBED
