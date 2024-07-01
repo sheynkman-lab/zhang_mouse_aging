@@ -167,6 +167,12 @@ So, this works, but I need to run it through some parts of the LRP to get the ri
 export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo 
 
 PoGo -fasta ./00_gencode_mouse_models/human/gencode.v46.pc_translations.fa -gtf ./00_gencode_mouse_models/human/gencode.v46.annotation.gtf -in all_peptide_POGO.txt -format BED -species MOUSE 
+
+PoGo -fasta ./00_gencode_mouse_models/gencode.vM34.pc_translations.fa -gtf ./00_gencode_mouse_models/gencode.vM34.annotation.gtf -in all_peptide_POGO.txt -format BED
+
+PoGo -fasta ./00_gencode_mouse_models/gencode.vM32.pc_translations.fa -gtf ./00_gencode_mouse_models/gencode.vM32.basic.annotation.gtf -in all_peptide_POGO.txt -format BED
+
+
 ```
 
 Trying to use the LRP scripts to make the bed files for genome browser
@@ -200,3 +206,39 @@ python ./00_scripts/18_finalize_peptide_bed.py \
 
 conda deactivate
 ```
+
+This is actually a new version of the script...
+```
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo
+python ./LRP_tracks/peptide_gtf.py --name mouse --gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf --peptides all_peptide_POGO.txt --fasta ./00_gencode_mouse_models/gencode.vM35.pc_translations.fa
+```
+
+# Hyrbid
+python ./LRP_tracks/peptide_to_bed.py \
+--name ./LRP_tracks/mouse \
+--sample_gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf \
+--reference_gtf ./00_gencode_mouse_models/gencode.vM35.annotation.gtf \
+--peptides all_peptide_POGO.txt \
+--pb_gene ./LRP/04_transcriptome_summary/pb_gene.tsv \
+--gene_isoname ./LRP/01_reference_tables/gene_isoname.tsv \
+--refined_fasta ./00_gencode_mouse_models/gencode.vM35.pc_translations.fa 
+
+gtfToGenePred ./18_track_visualization/peptide/jurkat_hybrid_peptides.gtf ./18_track_visualization/peptide/jurkat_hybrid_peptides.genePred
+genePredToBed ./18_track_visualization/peptide/jurkat_hybrid_peptides.genePred ./18_track_visualization/peptide/jurkat_hybrid_peptides.bed12
+# add rgb to colorize specific peptides
+python ./00_scripts/18_finalize_peptide_bed.py \
+--bed ./18_track_visualization/peptide/jurkat_hybrid_peptides.bed12 \
+--name ./18_track_visualization/jurkat_hybrid
+
+conda deactivate
+
+# Trying a new approach
+## Step 1 - Download newest version of PoGo & data
+```
+wget https://github.com/cschlaffner/PoGo/releases/download/v1.2.3/PoGo_v1.2.3.zip
+unzip PoGo_v1.2.3.zip
+export PATH=$PATH:/project/sheynkman/projects/zhang_mouse_aging/PoGo_v1.2.3/Linux
+```
+This version of PoGo will work with mouse data, but it does not support Gencode. It only supports Ensambl. So I'm downloading the new dataset.
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in all_peptide_POGO.txt -format BED
