@@ -1,0 +1,5 @@
+hub track_hub
+shortLabel track_hub
+longLabel track_hub
+genomesFile genomes.txt
+email watts.emily.f@virginia.edu
