@@ -55,7 +55,7 @@ write.table(restructured_pogo_df, file = file_path, sep = "\t", quote = FALSE, r
 
 
 # pq31190
-pq31153_df <- read_csv("00_2024-05-29_Tian_Aging_Mouse_SpliceProt/output/04_make_clean_peptide_tables/pq31190.csv")
+pq31190_df <- read_csv("2024-05-29_Tian_Aging_Mouse_SpliceProt/output/04_make_clean_peptide_tables/pq31190.csv")
 
 restructured_pogo_df <- pq31190_df %>%
   mutate( #mutate just allows us to modify and add columns!
@@ -65,7 +65,7 @@ restructured_pogo_df <- pq31190_df %>%
   ) %>%
   select(Experiment, Distinct_Peptide = PeptideSequence, PSMs, Quant) #the dataframe we're creating will only have these columns
 
-file_path <- "pq31190_peptide_POGO.txt"
+file_path <- "pq31190_peptides.txt"
 write.table(restructured_pogo_df, file = file_path, sep = "\t", quote = FALSE, row.names = FALSE)
 
 # all
