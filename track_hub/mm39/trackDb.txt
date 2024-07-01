@@ -1,0 +1,8 @@
+track all_peptide_POGO
+bigDataUrl all_peptide_POGO.bb
+shortLabel all_peptide_POGO
+longLabel all_peptide_POGO
+type bigBed 12
+visibility dense
+itemRgb on
+

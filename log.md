@@ -235,10 +235,38 @@ conda deactivate
 # Trying a new approach
 ## Step 1 - Download newest version of PoGo & data
 ```
+cd /project/sheynkman/programs-needs_attentionEFW
 wget https://github.com/cschlaffner/PoGo/releases/download/v1.2.3/PoGo_v1.2.3.zip
 unzip PoGo_v1.2.3.zip
-export PATH=$PATH:/project/sheynkman/projects/zhang_mouse_aging/PoGo_v1.2.3/Linux
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo_v1.2.3
 ```
 This version of PoGo will work with mouse data, but it does not support Gencode. It only supports Ensambl. So I'm downloading the new dataset.
 
-PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in all_peptide_POGO.txt -format BED
+# Step 2 - Run PoGo
+```
+cd /project/sheynkman/projects/zhang_mouse_aging
+
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/all_peptide_POGO.txt -format BED
+```
+
+# Step 3 - Convert to bigBED
+First, I'll download it then do the conversion
+```
+cd /project/sheynkman/programs-needs_attentionEFW
+wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed
+chmod +x bedToBigBed
+
+wget https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/fetchChromSizes
+chmod +x fetchChromSizes
+
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/
+
+cd /project/sheynkman/projects/zhang_mouse_aging/00_scripts
+wget https://github.com/cschlaffner/TrackHubGenerator/blob/master/TrackHubGenerator.pl
+
+cd ..
+module load perl/5.36.0
+
+perl 00_scripts/TrackHubGenerator.pl /project/sheynkman/projects/zhang_mouse_aging/track_hub/ mm39 /project/sheynkman/projects/zhang_mouse_aging/PoGo_output/ /project/sheynkman/programs-needs_attentionEFW/ watts.emily.f@virginia.edu
+
+```
