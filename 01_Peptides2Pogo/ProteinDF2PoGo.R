@@ -68,7 +68,7 @@ restructured_pogo_df <- pq31190_df %>%
 file_path <- "pq31190_peptides.txt"
 write.table(restructured_pogo_df, file = file_path, sep = "\t", quote = FALSE, row.names = FALSE)
 
-# all
+# all cleaved
 all_df <- read_csv("00_2024-05-29_Tian_Aging_Mouse_SpliceProt/output/07_filtered_co_expressed_isoforms/filtered_co_expressed_isoforms.csv")
 
 restructured_pogo_df <- all_df %>%
@@ -82,7 +82,19 @@ restructured_pogo_df <- all_df %>%
 file_path <- "all_peptide_POGO.txt"
 write.table(restructured_pogo_df, file = file_path, sep = "\t", quote = FALSE, row.names = FALSE)
 
+# all aggregate
+all_df <- read_csv("2024-05-29_Tian_Aging_Mouse_SpliceProt/output/06_isoform_annotation_of_experi_peptides/peptide_to_isoform_mapping_with_experimental_peptides.csv")
 
+restructured_pogo_df <- all_df %>%
+  mutate( #mutate just allows us to modify and add columns!
+    Experiment = "all", #create column called "Experiment" that is filled with the experiment type
+    PSMs = 1, #create column called "PSMs" and fill with 1
+    Quant = 1 #create column called "Quant" and fill with 1
+  ) %>%
+  select(Experiment, Distinct_Peptide = pep_seq, PSMs, Quant) #the dataframe we're creating will only have these columns
+
+file_path <- "aggregate_peptides.txt"
+write.table(restructured_pogo_df, file = file_path, sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 
