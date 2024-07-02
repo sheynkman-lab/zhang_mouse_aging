@@ -86,3 +86,4 @@ python ./00_scripts/count_data.py
 ```
 Aggregate - Unique gene_names: 22024, Unique pep_seqs: 717490, Unique transcript_names: 66178
 Cleaved - Unique gene_names: 271, Unique pep_seqs: 1977, Unique transcript_names: 581
+
