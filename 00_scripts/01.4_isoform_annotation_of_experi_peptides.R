@@ -12,7 +12,7 @@ library(tidyverse)
 pep_map <- read_csv('./01_filter_data/01.5_peptide_to_isoform_mapping/tryptic_peptide_to_mouse_protein_mapping.csv')
 
 # read in experimentally identified peptides
-experiment_files <- list.files(path='./01_filter_data/01.4_make_clean_peptide_tables/', pattern='p*csv', full.names=TRUE)
+experiment_files <- list.files(path='./01_filter_data/01.2_make_clean_peptide_tables/', pattern='p*csv', full.names=TRUE)
 
 # initialize list to hold the data frames
 experiment_dfs <- list()
@@ -45,7 +45,7 @@ for (experiment_name in names(experiment_dfs)) {
 
 
 # write out peptide map with the peptides found in Tian's experiments marked
-write_csv(pep_map, './01_filter_data/01.6_isoform_annotation_of_experi_peptides/peptide_to_isoform_mapping_with_experimental_peptides.csv')
+write_csv(pep_map, './01_filter_data/01.4_isoform_annotation_of_experi_peptides/peptide_to_isoform_mapping_with_experimental_peptides.csv')
 
 
 #%%

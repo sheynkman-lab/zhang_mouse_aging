@@ -9,7 +9,7 @@ library(readr)
 
 # ---- Input and Output directories ----
 input_dir <- './00_peptide_data_20240702'
-output_dir <- './01_filter_data/01.3_view_peptide_data'
+output_dir <- './01_filter_data/01.1_view_peptide_data'
 
 # ---- Create output directory ----
 if (!dir.exists(output_dir)) {

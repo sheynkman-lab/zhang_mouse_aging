@@ -62,7 +62,7 @@ collapsed.pep.df.joined <- collapsed.pep.df.joined %>%
   mutate(gene.specificity = ifelse(is.na(multigene.IDs), "gene-specific", "not gene-specific"))
 
 # write out results
-output_dir <- "./01_filter_data/01.5_peptide_to_isoform_mapping/"
+output_dir <- "./01_filter_data/01.3_peptide_to_isoform_mapping/"
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
 }

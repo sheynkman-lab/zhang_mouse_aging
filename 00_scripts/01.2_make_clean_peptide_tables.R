@@ -25,7 +25,7 @@ clean_file <- function(input_path, output_path) {
 # Directory containing the input files
 input_directory <- "./00_peptide_data_20240702"
 # Directory to save the cleaned files
-output_directory <- "./01_filter_data/01.4_make_clean_peptide_tables"
+output_directory <- "./01_filter_data/01.2_make_clean_peptide_tables"
 
 # Ensure the output directory exists
 if (!dir.exists(output_directory)) {

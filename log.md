@@ -107,6 +107,7 @@ module load openmpi/4.1.4
 module load python/3.11.4
 module load git-lfs/2.10.0
 module load apptainer/1.2.2
+module load R/4.3.1
 ```
 
 # Step 1 - sort through peptide data
@@ -120,3 +121,21 @@ I used the following scripts in R to create these:
 # Step 2 - prepare peptide data for PoGo
 I used this script:
 `02_ProteinDF2PoGo.R`
+
+# Step 3 - Run PoGo
+```
+export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo_v1.2.3/Linux
+
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/coexpressed_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/experimental_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31811_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31812_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31813_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31814_peptides.txt -format BED
+
+# Step 3 - Convert to bigBED
+```
+module load perl/5.36.0
+
+perl 00_scripts/TrackHubGenerator.pl /project/sheynkman/projects/zhang_mouse_aging/ mm39 /project/sheynkman/projects/zhang_mouse_aging/03_pogo_out/ /project/sheynkman/programs-needs_attentionEFW/ watts.emily.f@virginia.edu
+```
