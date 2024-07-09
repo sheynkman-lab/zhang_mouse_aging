@@ -91,4 +91,6 @@ Cleaved - Unique gene_names: 271, Unique pep_seqs: 1977, Unique transcript_names
 
 git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch 2024-05-29_Tian_Aging_Mouse_SpliceProt/' --prune-empty --tag-name-filter cat -- --all
 git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch PoGo_output/' --prune-empty --tag-name-filter cat -- --all
+git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch 05_peptide_to_isoform_mapping/tryptic_peptide_to_mouse_protein_mapping.csv' --prune-empty --tag-name-filter cat -- --all
+
 
