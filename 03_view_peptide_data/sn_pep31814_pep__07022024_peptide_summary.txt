@@ -1,0 +1,23 @@
+Number of distinct ProteinId: 9498 
+Number of distinct ProteinId (tr): 972 
+Number of distinct ProteinId (sp): 8433 
+Total number of genes: 9063 
+Number of genes (tr): 898 
+Number of genes (sp): 8269 
+Unique number of GroupId: 7657 
+Cleaned Peptide Sequences:
+# A tibble: 217,843 × 1
+   PeptideSequenceClean
+   <chr>               
+ 1 EGAQYLM*QAAGLGR     
+ 2 EGAQYLM*QAAGLGR     
+ 3 EGAQYLM*QAAGLGR     
+ 4 EGAQYLMQAAGLGR      
+ 5 EGLDISHLQGQEELLSSQEK
+ 6 EGLDISHLQGQEELLSSQEK
+ 7 EGLDISHLQGQEELLSSQEK
+ 8 FQVDPVSENAGR        
+ 9 FQVDPVSENAGR        
+10 FQVDPVSENAGR        
+# ℹ 217,833 more rows
+# ℹ Use `print(n = ...)` to see more rows

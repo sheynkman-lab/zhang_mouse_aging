@@ -26,6 +26,8 @@ cd /project/sheynkman/projects/zhang_mouse_aging
 conda activate PoGo
 ```
 
+# Step  0 - make peptide tables
+Using the scripts from `2024-05-29_Tian_Aging_Mouse_SpliceProt`, I converted the data to cleaner, more readable formats. 
 
 # Step 1 - Peptides 2 PoGo
 This is an R script that takes the peptides and converts them to a PoGo database. <br/>
@@ -45,7 +47,7 @@ This version of PoGo will work with mouse data, but it does not support Gencode.
 ```
 cd /project/sheynkman/projects/zhang_mouse_aging
 
-PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/all_peptides.txt -format BED
+PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./01_Peptides2Pogo/multi_peptides.txt -format BED
 
 PoGo -fasta ./ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./ensambl_mouse/Mus_musculus.GRCm39.112.gtf -in ./01_Peptides2Pogo/pq31153_peptides.txt -format BED
 
