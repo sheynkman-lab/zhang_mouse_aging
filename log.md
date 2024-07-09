@@ -89,8 +89,34 @@ python ./00_scripts/count_data.py
 Aggregate - Unique gene_names: 22024, Unique pep_seqs: 717490, Unique transcript_names: 66178
 Cleaved - Unique gene_names: 271, Unique pep_seqs: 1977, Unique transcript_names: 581
 
-git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch 2024-05-29_Tian_Aging_Mouse_SpliceProt/' --prune-empty --tag-name-filter cat -- --all
-git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch PoGo_output/' --prune-empty --tag-name-filter cat -- --all
-git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch 05_peptide_to_isoform_mapping/tryptic_peptide_to_mouse_protein_mapping.csv' --prune-empty --tag-name-filter cat -- --all
 
 
+########################################################################
+#########Starting OVER with new data####################################
+########################################################################
+
+# Step 0 - load modules and set working data
+```
+cd /project/sheynkman/projects/zhang_mouse_aging
+
+module load gcc/11.4.0
+module load mamba/22.11.1-4
+module load bioconda/py3.10
+module load anaconda/2023.07-py3.11
+module load openmpi/4.1.4
+module load python/3.11.4
+module load git-lfs/2.10.0
+module load apptainer/1.2.2
+```
+
+# Step 1 - sort through peptide data
+I used the following scripts in R to create these:
+`01.1_view_peptide_data.R`
+`01.2_make_clean_peptide_tables.R`
+`01.3_peptide_to_isoform_mapping.R`
+`01.4_isoform_annotation_of_experi_peptides.R`
+`01.5_filter_for_co_expressed_isoforms.R`
+
+# Step 2 - prepare peptide data for PoGo
+I used this script:
+`02_ProteinDF2PoGo.R`
