@@ -1,0 +1,7 @@
+name: peptide_analysis
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pandas
+  - openpyxl
