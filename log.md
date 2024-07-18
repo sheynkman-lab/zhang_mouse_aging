@@ -56,4 +56,7 @@ python ./00_scripts/04_separate_candidate_peps.py
 python ./00_scripts/04_candidate_peps_summary.py
 python ./00_scripts/04_candidate_peps_summary_reduced.py
 python ./00_scripts/04_candidate_peps_separated_by_effect.py
+python ./00_scripts/04_age_peps.py
+python ./00_scripts/04_all_subset_candidate_peps.py
+python ./00_scripts/04_age_subset_candidate_peps.py
 ```
