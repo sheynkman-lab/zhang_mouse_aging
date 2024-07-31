@@ -3,6 +3,10 @@ import pandas as pd
 # Load the data from both CSV files
 peptide_isoform_df = pd.read_csv('01_filter_data/01.4_isoform_annotation_of_experi_peptides/peptide_to_isoform_mapping_with_experimental_peptides.csv')
 peptide_effects_df = pd.read_excel('00_peptide_data_20240702/unique_peptide_effects_20240702.xlsx', sheet_name=None)
+filtered_peptides_df = pd.read_csv('01_filter_data/01.5_filtered_co_expressed_isoforms/filtered_co_expressed_isoforms.csv')
+
+# Extract the list of filtered peptide sequences
+filtered_peptides = filtered_peptides_df['pep_seq'].unique()
 
 # Initialize an empty DataFrame to store combined effects from all tissues
 combined_effects_df = pd.DataFrame()
@@ -19,8 +23,16 @@ peptide_seq_column = 'peptide_seq' if 'peptide_seq' in combined_effects_df.colum
 # Standardize the peptide sequences in combined_effects_df
 combined_effects_df['standardized_peptide_seq'] = combined_effects_df[peptide_seq_column].apply(lambda x: x.split('.')[1] if '.' in x else x)
 
+# Filter combined_effects_df to include only the peptides in the filtered_peptides list
+combined_effects_df = combined_effects_df[combined_effects_df['standardized_peptide_seq'].isin(filtered_peptides)]
+
 # Merge the datasets on the standardized peptide sequence
 merged_df = pd.merge(peptide_isoform_df, combined_effects_df, left_on='pep_seq', right_on='standardized_peptide_seq', how='inner')
+
+# Print the merged dataframe shape and a sample
+print("Merged DataFrame shape:", merged_df.shape)
+print("Merged DataFrame sample:")
+print(merged_df.head())
 
 # Define a function to determine if the change is significant based on p-values and effect sizes
 def map_change(p_value, effect_size):
@@ -51,7 +63,10 @@ merged_df['change'] = merged_df.apply(
     ]), axis=1
 )
 
-# Aggregate peptides for each gene
+# Print the changes column for debugging
+print("Changes column sample:")
+print(merged_df[['pep_seq', 'change']].head())
+
 # Define a function to aggregate data for each gene
 def aggregate_data(group):
     result = []
@@ -124,15 +139,37 @@ def aggregate_data(group):
 
     return pd.DataFrame(result)
 
-
 # Aggregate data by gene
 aggregated_data = merged_df.groupby('gene_name').apply(aggregate_data).reset_index(drop=True)
 
-# Print some debug information
+# Print the aggregated data sample
 print("Aggregated data sample:")
 print(aggregated_data.head())
 
-# Save the result to a new CSV file
-aggregated_data.to_csv('aggregated_peptide_data_final.csv', index=False)
+# Define the filter condition function
+def filter_condition(group):
+    shared_peptides = group[group['peptide_cat'].str.contains('constitutive|semishared')]
+    isoform_specific_peptides = group[group['peptide_cat'].str.contains('isoform-specific')]
 
-print("Final aggregated peptide data saved to 'aggregated_peptide_data_final.csv'.")
+    if not shared_peptides.empty and not isoform_specific_peptides.empty:
+        shared_no_change_fraction = (shared_peptides['change'].str.count('0') / shared_peptides['change'].str.split('; ').str.len()).mean()
+        isoform_specific_change_present = isoform_specific_peptides['change'].str.contains('1|\\-1').any()
+        
+        print(f"Gene: {group['gene'].iloc[0]}")
+        print(f"Shared no change fraction: {shared_no_change_fraction}")
+        print(f"Isoform-specific change present: {isoform_specific_change_present}")
+
+        return shared_no_change_fraction > 0.8 and isoform_specific_change_present
+    return False
+
+# Filter the aggregated data
+filtered_data = aggregated_data.groupby('gene').filter(filter_condition)
+
+# Print some debug information
+print("Filtered data sample:")
+print(filtered_data.head())
+
+# Save the result to a new CSV file
+filtered_data.to_csv('coexpressed_0.9_peptide_data.csv', index=False)
+
+print("Filtered peptide data saved to 'coexpressed_0.9_peptide_data.csv'.")

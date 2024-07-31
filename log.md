@@ -45,18 +45,29 @@ perl 00_scripts/TrackHubGenerator.pl /project/sheynkman/projects/zhang_mouse_agi
 ```
 
 # Step 4 - Find candidate peptides
+All 3 scripts apply the following steps:
+1. Filter for peptides with a significant (>0.05) change
+2. Determine "fraction gene change." 0 if no [significant] change, -1 if decreases with age, sex, etc., and 1 if increases
+3. Calculate average effect size if multiple peptides map to the same gene and are in the same category (constitutive & isoform-infomative; isoform-specific is always separate)
+
 ```
 conda env create -f ./00_scripts/candidate_peps.yml
 
 conda activate candidate_peps
-
-python ./00_scripts/04_candidate_peps_sig.py
-python ./00_scripts/04_candidate_peps_all.py
-python ./00_scripts/04_separate_candidate_peps.py
-python ./00_scripts/04_candidate_peps_summary.py
+```
+This script filters for genes (across all tissue types and effect types) where more than 90% (and 80%) of the shared peptides (constitutive and isoform-informative) have no change (fraction gene change = 0) and at least one isoform-specific peptide have a change (faction gene change = -1 or 1). The file here is very large.
+```
 python ./00_scripts/04_candidate_peps_summary_reduced.py
-python ./00_scripts/04_candidate_peps_separated_by_effect.py
-python ./00_scripts/04_age_peps.py
-python ./00_scripts/04_all_subset_candidate_peps.py
+```
+This script filters for genes (across all tissue types but only sex effect) where the constitutive paptides have 0 fraction gene change, and the isofom-specific peptides have a change. This file is still very large.
+```
+python ./00_scripts/04_sex_subset_candidate_peps.py
+```
+This script filters for genes (across all tissue types but only age effect) where the constitutive paptides have 0 fraction gene change, and the isofom-specific peptides have a change. This file is still very large. 
+```
 python ./00_scripts/04_age_subset_candidate_peps.py
+```
+Those didn't include any coexpressed isoform, so I modified the first script to only include genes with coexpressed isoforms.
+```
+python ./00_scripts/04_0.9_coexpressed.py
 ```

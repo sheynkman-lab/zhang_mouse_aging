@@ -1,8 +1,12 @@
 import pandas as pd
 
-# Load the data from both CSV files
+# Load the data from the provided CSV files
 peptide_isoform_df = pd.read_csv('01_filter_data/01.4_isoform_annotation_of_experi_peptides/peptide_to_isoform_mapping_with_experimental_peptides.csv')
 peptide_effects_df = pd.read_excel('00_peptide_data_20240702/unique_peptide_effects_20240702.xlsx', sheet_name=None)
+filtered_peptides_df = pd.read_csv('01_filter_data/01.5_filtered_co_expressed_isoforms/filtered_co_expressed_isoforms.csv') 
+
+# Extract the list of peptides from the filtered peptides table
+filtered_peptides = filtered_peptides_df['pep_seq'].unique()
 
 # Initialize an empty DataFrame to store combined effects from all tissues
 combined_effects_df = pd.DataFrame()
@@ -19,13 +23,16 @@ peptide_seq_column = 'peptide_seq' if 'peptide_seq' in combined_effects_df.colum
 # Standardize the peptide sequences in combined_effects_df
 combined_effects_df['standardized_peptide_seq'] = combined_effects_df[peptide_seq_column].apply(lambda x: x.split('.')[1] if '.' in x else x)
 
+# Filter combined_effects_df to include only the peptides in the filtered_peptides list
+combined_effects_df = combined_effects_df[combined_effects_df['standardized_peptide_seq'].isin(filtered_peptides)]
+
 # Merge the datasets on the standardized peptide sequence
 merged_df = pd.merge(peptide_isoform_df, combined_effects_df, left_on='pep_seq', right_on='standardized_peptide_seq', how='inner')
 
-# Filter for relevant columns
-merged_df = merged_df[['gene_name', 'pep_seq', 'transcript_name', 'category', 'sex_pval', 'sex_effect', 'age_pval', 'age_effect', 'age_cat_pval', 'age_intercept_effect', 'age_m12_effect', 'age_m20_effect']]
+# Filter for sex effect only
+merged_df = merged_df[['gene_name', 'pep_seq', 'transcript_name', 'category', 'sex_pval', 'sex_effect']]
 
-# Define a function to determine if the change is significant based on effect sizes and p-values
+# Define a function to determine if the change is significant based on sex effect sizes and p-values
 def map_change(p_value, effect_size):
     try:
         p_value = float(p_value)
@@ -43,15 +50,9 @@ def map_change(p_value, effect_size):
     else:
         return '0'
 
-# Apply the change mapping to the dataset for all effects
+# Apply the change mapping to the dataset for sex effect only
 merged_df['change'] = merged_df.apply(
-    lambda row: '; '.join(map_change(row[p], row[e]) for p, e in [
-        ('sex_pval', 'sex_effect'),
-        ('age_pval', 'age_effect'),
-        ('age_cat_pval', 'age_intercept_effect'),
-        ('age_cat_pval', 'age_m12_effect'),
-        ('age_cat_pval', 'age_m20_effect')
-    ]), axis=1
+    lambda row: map_change(row['sex_pval'], row['sex_effect']), axis=1
 )
 
 # Aggregate peptides for each gene
@@ -63,14 +64,14 @@ def aggregate_data(group):
     if not isoform_specific.empty:
         peptides = isoform_specific['pep_seq'].tolist()
         changes = isoform_specific['change'].tolist()
-        effect_sizes = isoform_specific[['sex_effect', 'age_effect', 'age_intercept_effect', 'age_m12_effect', 'age_m20_effect']].values.tolist()
+        effect_sizes = isoform_specific['sex_effect'].tolist()
         num_peptides = len(peptides)
 
         if num_peptides > 0:
             # Calculate fraction of significant changes
-            non_zero_changes = sum(1 for v in changes if '0' not in v.split('; '))
+            non_zero_changes = sum(1 for v in changes if v != '0')
             fraction_gene_change = non_zero_changes / num_peptides
-            avg_effect_size = sum(sum(float(e) for e in es) for es in effect_sizes) / (num_peptides * len(effect_sizes[0]))
+            avg_effect_size = sum(float(e) for e in effect_sizes) / num_peptides
 
             result.append({
                 'gene': isoform_specific['gene_name'].iloc[0],
@@ -78,7 +79,7 @@ def aggregate_data(group):
                 'peptide_cat': 'isoform-specific',
                 'mapped_isoform': '; '.join(isoform_specific['transcript_name'].tolist()),
                 'change': '; '.join(changes),
-                'effect_sizes': '; '.join('; '.join(map(str, es)) for es in effect_sizes),
+                'effect_sizes': '; '.join(map(str, effect_sizes)),
                 'fraction_gene_change': fraction_gene_change,
                 'avg_effect_size': avg_effect_size
             })
@@ -88,14 +89,14 @@ def aggregate_data(group):
     if not isoform_informative.empty:
         peptides = isoform_informative['pep_seq'].tolist()
         changes = isoform_informative['change'].tolist()
-        effect_sizes = isoform_informative[['sex_effect', 'age_effect', 'age_intercept_effect', 'age_m12_effect', 'age_m20_effect']].values.tolist()
+        effect_sizes = isoform_informative['sex_effect'].tolist()
         num_peptides = len(peptides)
 
         if num_peptides > 0:
             # Calculate fraction of significant changes
-            non_zero_changes = sum(1 for v in changes if '0' not in v.split('; '))
+            non_zero_changes = sum(1 for v in changes if v != '0')
             fraction_gene_change = non_zero_changes / num_peptides
-            avg_effect_size = sum(sum(float(e) for e in es) for es in effect_sizes) / (num_peptides * len(effect_sizes[0]))
+            avg_effect_size = sum(float(e) for e in effect_sizes) / num_peptides
 
             result.append({
                 'gene': isoform_informative['gene_name'].iloc[0],
@@ -103,7 +104,7 @@ def aggregate_data(group):
                 'peptide_cat': 'isoform-informative',
                 'mapped_isoform': '; '.join(isoform_informative['transcript_name'].tolist()),
                 'change': '; '.join(changes),
-                'effect_sizes': '; '.join('; '.join(map(str, es)) for es in effect_sizes),
+                'effect_sizes': '; '.join(map(str, effect_sizes)),
                 'fraction_gene_change': fraction_gene_change,
                 'avg_effect_size': avg_effect_size
             })
@@ -113,14 +114,14 @@ def aggregate_data(group):
     if not constitutive.empty:
         peptides = constitutive['pep_seq'].tolist()
         changes = constitutive['change'].tolist()
-        effect_sizes = constitutive[['sex_effect', 'age_effect', 'age_intercept_effect', 'age_m12_effect', 'age_m20_effect']].values.tolist()
+        effect_sizes = constitutive['sex_effect'].tolist()
         num_peptides = len(peptides)
 
         if num_peptides > 0:
             # Calculate fraction of significant changes
-            non_zero_changes = sum(1 for v in changes if '0' not in v.split('; '))
+            non_zero_changes = sum(1 for v in changes if v != '0')
             fraction_gene_change = non_zero_changes / num_peptides
-            avg_effect_size = sum(sum(float(e) for e in es) for es in effect_sizes) / (num_peptides * len(effect_sizes[0]))
+            avg_effect_size = sum(float(e) for e in effect_sizes) / num_peptides
 
             result.append({
                 'gene': constitutive['gene_name'].iloc[0],
@@ -128,7 +129,7 @@ def aggregate_data(group):
                 'peptide_cat': 'constitutive',
                 'mapped_isoform': '; '.join(constitutive['transcript_name'].tolist()),
                 'change': '; '.join(changes),
-                'effect_sizes': '; '.join('; '.join(map(str, es)) for es in effect_sizes),
+                'effect_sizes': '; '.join(map(str, effect_sizes)),
                 'fraction_gene_change': fraction_gene_change,
                 'avg_effect_size': avg_effect_size
             })
@@ -176,6 +177,6 @@ final_filtered_data_with_informative = pd.concat([
 ])
 
 # Save the result to a new CSV file
-final_filtered_data_with_informative.to_csv('./04_candidate_peps/subset_filtered_peptides_all_effects.csv', index=False)
+final_filtered_data_with_informative.to_csv('./04_candidate_peps/coexpressed_sex_effects.csv', index=False)
 
-print("Filtered peptide data with all effects and isoform-informative peptides saved to 'subset_filtered_peptides_all_effects.csv'.")
+print("Filtered peptide data saved to 'coexpressed_sex_effects.csv'.")
