@@ -29,8 +29,8 @@ I used this script:
 ```
 export PATH=$PATH:/project/sheynkman/programs/PoGo_v1.2.3/Linux
 
-PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/coexpressed_peptides.txt -format BED
-PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/experimental_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/coexpressed_isoform_peptides.txt -format BED
+PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/all_peptides.txt -format BED
 PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31811_peptides.txt -format BED
 PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31812_peptides.txt -format BED
 PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/sn_pq31813_peptides.txt -format BED
