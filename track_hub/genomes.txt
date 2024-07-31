@@ -31,3 +31,6 @@ trackDb 00_gencode_mouse_models/trackDb.txt
 genome .git
 trackDb .git/trackDb.txt
 
+genome 04_candidate_peps
+trackDb 04_candidate_peps/trackDb.txt
+

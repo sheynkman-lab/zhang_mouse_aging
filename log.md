@@ -27,7 +27,7 @@ I used this script:
 
 # Step 3 - Run PoGo
 ```
-export PATH=$PATH:/project/sheynkman/programs-needs_attentionEFW/PoGo_v1.2.3/Linux
+export PATH=$PATH:/project/sheynkman/programs/PoGo_v1.2.3/Linux
 
 PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/coexpressed_peptides.txt -format BED
 PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_mouse_models/gencode.vM35.basic.annotation.gtf -in ./02_Peptides2Pogo/experimental_peptides.txt -format BED
@@ -41,7 +41,7 @@ PoGo -fasta ./00_ensambl_mouse/Mus_musculus.GRCm39.pep.all.fa -gtf ./00_gencode_
 ```
 module load perl/5.36.0
 
-perl 00_scripts/TrackHubGenerator.pl /project/sheynkman/projects/zhang_mouse_aging/ mm39 /project/sheynkman/projects/zhang_mouse_aging/03_pogo_out/ /project/sheynkman/programs-needs_attentionEFW/ watts.emily.f@virginia.edu
+perl 00_scripts/TrackHubGenerator.pl /project/sheynkman/projects/zhang_mouse_aging/ mm39 /project/sheynkman/projects/zhang_mouse_aging/03_pogo_out/ /project/sheynkman/programs/ watts.emily.f@virginia.edu
 ```
 
 # Step 4 - Find candidate peptides
