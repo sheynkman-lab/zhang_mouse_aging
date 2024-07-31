@@ -1,5 +1,0 @@
-hub zhang_mouse_aging
-shortLabel zhang_mouse_aging
-longLabel zhang_mouse_aging
-genomesFile genomes.txt
-email watts.emily.f@virginia.edu
