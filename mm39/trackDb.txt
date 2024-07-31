@@ -1,0 +1,48 @@
+track all_peptides
+bigDataUrl all_peptides.bb
+shortLabel all_peptides
+longLabel all_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+
+track coexpressed_isoform_peptides
+bigDataUrl coexpressed_isoform_peptides.bb
+shortLabel coexpressed_isofo
+longLabel coexpressed_isoform_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+
+track sn_pq31811_peptides
+bigDataUrl sn_pq31811_peptides.bb
+shortLabel sn_pq31811_peptid
+longLabel sn_pq31811_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+
+track sn_pq31812_peptides
+bigDataUrl sn_pq31812_peptides.bb
+shortLabel sn_pq31812_peptid
+longLabel sn_pq31812_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+
+track sn_pq31813_peptides
+bigDataUrl sn_pq31813_peptides.bb
+shortLabel sn_pq31813_peptid
+longLabel sn_pq31813_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+
+track sn_pq31814_peptides
+bigDataUrl sn_pq31814_peptides.bb
+shortLabel sn_pq31814_peptid
+longLabel sn_pq31814_peptides
+type bigBed 12
+visibility dense
+itemRgb on
+

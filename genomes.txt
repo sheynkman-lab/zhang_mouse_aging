@@ -1,0 +1,33 @@
+genome 02_Peptides2Pogo
+trackDb 02_Peptides2Pogo/trackDb.txt
+
+genome 03_pogo_out
+trackDb 03_pogo_out/trackDb.txt
+
+genome 00_scripts
+trackDb 00_scripts/trackDb.txt
+
+genome 00_2024-05-29_Tian_Aging_Mouse_SpliceProt
+trackDb 00_2024-05-29_Tian_Aging_Mouse_SpliceProt/trackDb.txt
+
+genome 00_ensambl_mouse
+trackDb 00_ensambl_mouse/trackDb.txt
+
+genome 01_filter_data
+trackDb 01_filter_data/trackDb.txt
+
+genome 00_peptide_data_20240702
+trackDb 00_peptide_data_20240702/trackDb.txt
+
+genome mm39
+trackDb mm39/trackDb.txt
+
+genome 00_gencode_mouse_models
+trackDb 00_gencode_mouse_models/trackDb.txt
+
+genome .git
+trackDb .git/trackDb.txt
+
+genome 04_candidate_peps
+trackDb 04_candidate_peps/trackDb.txt
+
